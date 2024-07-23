@@ -1,5 +1,6 @@
 #include "gtest/gtest.h"
 #include "MockByteConverter.hpp"
+#include "../../src/Converter/ByteConverter.hpp"
 
 class TestByteConverterTest : public ::testing::Test
 {
@@ -20,4 +21,7 @@ protected:
     // Code here will be called immediately after each test (right
     // before the destructor).
     virtual void TearDown();
+
+    CByteConverter byteConverter;
+    MockByteConverter mockByteConverter;
 };

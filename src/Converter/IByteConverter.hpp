@@ -1,9 +1,10 @@
 #pragma once
 
 class IByteConverter {
-    virtual void Process( ) = 0;
+protected:
+	virtual ~IByteConverter( ) noexcept { };
 
-private:
+    virtual void Process( ) = 0;
 	virtual void WaitForResults( ) = 0;
 	virtual int WriteValueFromSource( ) = 0;
 	virtual int GetByteValue( int position ) = 0;
