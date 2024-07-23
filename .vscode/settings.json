@@ -3,5 +3,6 @@
     "files.associations": {
         "*.rh": "cpp",
         "charconv": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 }

@@ -8,15 +8,12 @@ using namespace CByteConverterConsts;
 void CByteConverter::Process( ) {
 	this->FillDataAndType( );
 
-	//�������.����� 
 	if ( chType[ 0 ] == 0 && chType[ 1 ] == 0 ) {
 		this->result = 0;
 	}
-	//�������� �����
 	else if ( chType[ 0 ] == 1 && chType[ 1 ] == 0 ) {
 		this->result = WriteValueFromSource( );
 	}
-	//����� ���.���
 	else if ( chType[ 0 ] == 0 && chType[ 1 ] == 1 ) {
 		int value = WriteValueFromSource( );
 		this->result = value + 97;

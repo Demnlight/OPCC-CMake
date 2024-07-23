@@ -1,21 +1,11 @@
 file(GLOB SRCS *.cpp)
 file(GLOB HEADERS *.hpp)
 
-set (CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(WIN32)
-    set(CMAKE_CXX_FLAGS_RELEASE "/MT")
-    set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:msvcrtd")
 
-endif()
+add_executable(Test ${SRCS})
+target_link_libraries(Test libConverter gtest_main gmock_main)
 
-add_executable(TestByteConverterTest ${SRCS})
-
-target_link_libraries(TestByteConverterTest
-    libgtest
-    libgmock
-)
-
-add_test(NAME TestByteConverterTest
-         COMMAND TestByteConverterTest)
+add_test(Test foo)
