@@ -2,6 +2,7 @@ set(libConverterFiles
     ByteConverter.hpp
     ISink.hpp
     ISource.hpp
+    IByteConverter.hpp
     ByteConverter.cpp
 )
 

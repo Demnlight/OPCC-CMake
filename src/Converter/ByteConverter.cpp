@@ -21,8 +21,10 @@ void CByteConverter::Process( ) {
 }
 
 void CByteConverter::WaitForResults( ) {
-	if ( this->local_thread.joinable( ) )
+	if ( this->local_thread.joinable( ) ) {
 		this->local_thread.join( );
+		this->ThreadReleased = true;
+	}
 }
 
 int CByteConverter::GetByteValue( int position ) {

@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "MockByteConverter.hpp"
 
 class TestByteConverterTest : public ::testing::Test
 {
