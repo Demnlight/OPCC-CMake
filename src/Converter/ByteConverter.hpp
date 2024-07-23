@@ -68,27 +68,39 @@ public:
 	void Process( );
 private:
 	/*
-	Функция для конвертации наших данных в выделенном потоке.
+	Функция, которая дожидается результата конвертации. Так же проверяет thread::joinable и освобождает поток если это возможно. 
 	*/
 	void WaitForResults( );
+
 	/*
 	Функция, которая отвечает за конвертацию наших битов в число.
 	@return возвращает значения типа int, которое является результатом конвертации chData -> int.
 	*/
 	int WriteValueFromSource( );
+
 	/*
 	@return Возвращает значения бита {position}, в диапазоне 0-1.
 	*/
 	int GetByteValue( int position );
+
 	/*
 	Вспомогательная функция, которая отвечает за заполнение массивов chType и chData.
 	*/
 	void FillDataAndType( );
 
+	/*
+	отдельный поток для обработки {Process}
+	Создается в конструкторе.
+	Освобождается в методе WaitForResults или деструкторе.
+	Меняет значение CByteConverter::ThreadReleased
+	*/
 	std::thread local_thread;
 
-	char chType[ CByteConverterConsts::TypeSize ]{ };
-	char chData[ CByteConverterConsts::DataSize ]{ };
+	//Массив битов, отвечающих за тип обработки.
+	char chType[ CByteConverterConsts::TypeSize ];
+
+	//Массив битов, отвечающих за исходные данные.
+	char chData[ CByteConverterConsts::DataSize ];
 
 	//Переменная, которая становиться true, если поток был освобожден
 	bool ThreadReleased = false;

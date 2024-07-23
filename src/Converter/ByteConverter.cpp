@@ -8,6 +8,11 @@ using namespace CByteConverterConsts;
 void CByteConverter::Process( ) {
 	this->FillDataAndType( );
 
+	/*
+	@TODO:
+	Pattern design Strategy
+	*/
+
 	if ( chType[ 0 ] == 0 && chType[ 1 ] == 0 ) {
 		this->result = 0;
 	}
