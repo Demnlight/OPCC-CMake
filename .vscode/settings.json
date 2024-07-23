@@ -1,0 +1,7 @@
+{
+    "cmake.sourceDirectory": "E:/1Work/Sobes/OPCC CMake",
+    "files.associations": {
+        "*.rh": "cpp",
+        "charconv": "cpp"
+    }
+}

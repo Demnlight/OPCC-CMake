@@ -8,17 +8,18 @@ using namespace CByteConverterConsts;
 void CByteConverter::Process( ) {
 	this->FillDataAndType( );
 
-	//беззнак.число 
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.пїЅпїЅпїЅпїЅпїЅ 
 	if ( chType[ 0 ] == 0 && chType[ 1 ] == 0 ) {
 		this->result = 0;
 	}
-	//знаковое число
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	else if ( chType[ 0 ] == 1 && chType[ 1 ] == 0 ) {
 		this->result = WriteValueFromSource( );
 	}
-	//буква лат.алф
+	//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ.пїЅпїЅпїЅ
 	else if ( chType[ 0 ] == 0 && chType[ 1 ] == 1 ) {
-		this->result = WriteValueFromSource( );
+		int value = WriteValueFromSource( );
+		this->result = value + 97;
 	}
 }
 

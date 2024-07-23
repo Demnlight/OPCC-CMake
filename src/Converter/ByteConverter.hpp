@@ -9,7 +9,6 @@ namespace CByteConverterConsts {
 	static const int TypeSize = 2;
 	static const int DataSize = 6;
 }
-
 class CByteConverter : ISource<int>, ISink<int> {
 public:
 
@@ -24,6 +23,7 @@ public:
 	void Process( );
 	
 	void SetSource( int source ) override;
+
 	int Result( ) override;
 
 private:
