@@ -1,12 +1,14 @@
 #pragma once
+#include "ByteReader/IByteReader.hpp"
+#include "Processing/IThreadedProcessing.hpp"
+#include "Sink/ISink.hpp"
+#include "SourceReader/ISource.hpp"
 
-class IByteConverter {
+#include "IConverter.hpp"
+
+class IByteConverter : public ISink<int>, public ISource<int>, IByteReader, IConverter, IThreadedProcessing {
 protected:
 	virtual ~IByteConverter( ) noexcept { };
 
-    virtual void Process( ) = 0;
-	virtual void WaitForResults( ) = 0;
-	virtual int WriteValueFromSource( ) = 0;
-	virtual int GetByteValue( int position ) = 0;
 	virtual void FillDataAndType( ) = 0;
 };

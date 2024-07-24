@@ -13,55 +13,55 @@ void CByteConverter::Process( ) {
 	Pattern design Strategy
 	*/
 
-	if ( chType[ 0 ] == 0 && chType[ 1 ] == 0 ) {
-		this->result = 0;
+	if ( aType[ 0 ] == 0 && aType[ 1 ] == 0 ) {
+		this->m_Result = 0;
 	}
-	else if ( chType[ 0 ] == 1 && chType[ 1 ] == 0 ) {
-		this->result = WriteValueFromSource( );
+	else if ( aType[ 0 ] == 1 && aType[ 1 ] == 0 ) {
+		this->m_Result = this->FromCharArrayToInt( aData, DATA_SIZE );
 	}
-	else if ( chType[ 0 ] == 0 && chType[ 1 ] == 1 ) {
-		int value = WriteValueFromSource( );
-		this->result = value + 97;
+	else if ( aType[ 0 ] == 0 && aType[ 1 ] == 1 ) {
+		int nConvertedResult = this->FromCharArrayToInt( aData, DATA_SIZE );
+		this->m_Result = nConvertedResult + 'a';
 	}
 }
 
 void CByteConverter::WaitForResults( ) {
-	if ( this->local_thread.joinable( ) ) {
-		this->local_thread.join( );
-		this->ThreadReleased = true;
+	if ( this->thLocalThread.joinable( ) ) {
+		this->thLocalThread.join( );
+		this->bThreadReleased = true;
 	}
 }
 
 int CByteConverter::GetByteValue( int position ) {
-	return ( this->source >> position ) & 1u;
+	return ( this->m_Source >> position ) & 1u;
 }
 
 void CByteConverter::FillDataAndType( ) {
-	for ( std::size_t i = 0; i < TypeSize; ++i )
-		chType[ i ] = GetByteValue( i );
+	for ( std::size_t i = 0; i < TYPE_SIZE; ++i )
+		aType[ i ] = GetByteValue( i );
 
-	for ( std::size_t i = 0; i < DataSize; i++ )
-		chData[ i ] = GetByteValue( i + TypeSize );
+	for ( std::size_t i = 0; i < DATA_SIZE; i++ )
+		aData[ i ] = GetByteValue( i + TYPE_SIZE );
 }
 
-int CByteConverter::WriteValueFromSource( ) {
-	int result = 0;
+int CByteConverter::FromCharArrayToInt( char from[ ], std::size_t array_size ) {
+	int nResult = 0;
 
-	for ( std::size_t i = 0; i < DataSize; ++i ) {
-		if ( chData[ i ] == 1 )
-			result |= ( 1 << i );
+	for ( std::size_t i = 0; i < array_size; ++i ) {
+		if ( from[ i ] == 1 )
+			nResult |= ( 1 << i );
 		else
-			result &= ~( 1 << i );
+			nResult &= ~( 1 << i );
 	}
 
-	return result;
+	return nResult;
 }
 
-void CByteConverter::SetSource( int source ) {
-	this->source = source;
+void CByteConverter::SetSource( int m_Source ) {
+	this->m_Source = m_Source;
 }
 
 int CByteConverter::Result( ) {
 	this->WaitForResults( );
-	return this->result;
+	return this->m_Result;
 }

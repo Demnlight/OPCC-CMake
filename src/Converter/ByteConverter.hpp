@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ISink.hpp"
-#include "ISource.hpp"
 #include "IByteConverter.hpp"
 
 #include <thread>
@@ -9,8 +7,8 @@
 
 //Размерные контстанты, которые отвечают за количество битов числа, выделенных под обработку нужных нам данных.
 namespace CByteConverterConsts {
-	static const int TypeSize = 2;
-	static const int DataSize = 6;
+	static const int TYPE_SIZE = 2;
+	static const int DATA_SIZE = 6;
 }
 
 /*
@@ -24,12 +22,12 @@ namespace CByteConverterConsts {
 
 	Основной класс, который отвечает за создание отдельного потока при создании объекта, так же его контроль и освобождение.
 */
-class CByteConverter : ISource<int>, ISink<int>, IByteConverter {
+class CByteConverter : IByteConverter {
 public:
 
 	//выделяем отдельный поток для обработки наших данных
 	CByteConverter( ) {
-		local_thread = std::thread( &CByteConverter::Process, this );
+		thLocalThread = std::thread( &CByteConverter::Process, this );
 	}
 
 	/*
@@ -37,12 +35,12 @@ public:
 	Так же стоит проверить освободили ли мы поток, выделенный ранее. 
 	*/
 	~CByteConverter( ) noexcept {
-		if ( !ThreadReleased ) {
+		if ( !bThreadReleased ) {
 			std::cerr << "~CByteConverter() Thread not released\n";
 
-			if ( this->local_thread.joinable( ) ) {
-				this->local_thread.join( );
-				this->ThreadReleased = true;
+			if ( this->thLocalThread.joinable( ) ) {
+				this->thLocalThread.join( );
+				this->bThreadReleased = true;
 			}
 			else
 				std::cerr << "~CByteConverter() cant release thread\n";
@@ -51,10 +49,10 @@ public:
 
 	/*
 	ISource::SetSource override
-		@param int source - наше входное значение, которое будет использоваться далее.
-		устанавливает значение приватного поля ISource::source.
+		@param int m_Source - наше входное значение, которое будет использоваться далее.
+		устанавливает значение приватного поля ISource::m_Source.
 	*/
-	void SetSource( int source ) override;
+	void SetSource( int m_Source ) override;
 
 	/*
 	ISink::Result override
@@ -65,43 +63,43 @@ public:
 	/*
 	Функция для конвертации наших данных в выделенном потоке.
 	*/
-	void Process( );
+	void Process( ) override;
 private:
 	/*
 	Функция, которая дожидается результата конвертации. Так же проверяет thread::joinable и освобождает поток если это возможно. 
 	*/
-	void WaitForResults( );
+	void WaitForResults( ) override;
 
 	/*
 	Функция, которая отвечает за конвертацию наших битов в число.
-	@return возвращает значения типа int, которое является результатом конвертации chData -> int.
+	@return возвращает значения типа int, которое является результатом конвертации aData -> int.
 	*/
-	int WriteValueFromSource( );
+	int FromCharArrayToInt( char from[], std::size_t array_size ) override;
 
 	/*
 	@return Возвращает значения бита {position}, в диапазоне 0-1.
 	*/
-	int GetByteValue( int position );
+	int GetByteValue( int position ) override;
 
 	/*
-	Вспомогательная функция, которая отвечает за заполнение массивов chType и chData.
+	Вспомогательная функция, которая отвечает за заполнение массивов aType и aData.
 	*/
-	void FillDataAndType( );
+	void FillDataAndType( ) override;
 
 	/*
 	отдельный поток для обработки {Process}
 	Создается в конструкторе.
 	Освобождается в методе WaitForResults или деструкторе.
-	Меняет значение CByteConverter::ThreadReleased
+	Меняет значение CByteConverter::bThreadReleased
 	*/
-	std::thread local_thread;
+	std::thread thLocalThread;
 
 	//Массив битов, отвечающих за тип обработки.
-	char chType[ CByteConverterConsts::TypeSize ];
+	char aType[ CByteConverterConsts::TYPE_SIZE ];
 
 	//Массив битов, отвечающих за исходные данные.
-	char chData[ CByteConverterConsts::DataSize ];
+	char aData[ CByteConverterConsts::DATA_SIZE ];
 
 	//Переменная, которая становиться true, если поток был освобожден
-	bool ThreadReleased = false;
+	bool bThreadReleased = false;
 };

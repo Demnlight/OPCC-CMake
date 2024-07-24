@@ -8,5 +8,5 @@ public:
 	virtual ~ISink( ) noexcept { };
 
 protected:
-	T result;
+	T m_Result;
 };

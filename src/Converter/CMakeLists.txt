@@ -1,8 +1,12 @@
 set(libConverterFiles
-    ByteConverter.hpp
-    ISink.hpp
-    ISource.hpp
+    Processing/IProcessing.hpp
+    Processing/IThreadedProcessing.hpp
+    ByteReader/IByteReader.hpp
+    Sink/ISink.hpp
+    SourceReader/ISource.hpp
+    IConverter.hpp
     IByteConverter.hpp
+    ByteConverter.hpp
     ByteConverter.cpp
 )
 
